@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { createTransferService, getServices, updateTransferService, deleteTransferService } = require('../controllers/serviceController');
+const { createTransferService, getServices, updateTransferService, deleteTransferService, getOneService } = require('../controllers/serviceController');
 const validateToken = require('../utils/validateToken');
 
 /**
@@ -56,7 +56,7 @@ const validateToken = require('../utils/validateToken');
  *                   type: string
  *                   example: "Error message"
  */
-router.get('/', validateToken(['company']), getServices);
+router.get('/', validateToken(['company', 'client']), getServices);
 /**
  * @openapi
  * /api/services/create:
@@ -200,7 +200,7 @@ router.post('/create', validateToken(['company']), createTransferService);
  *                   type: string
  *                   example: "Error message"
  */
-router.post('/update/:id', validateToken(['company']), updateTransferService);
+router.put('/update/:id', validateToken(['company']), updateTransferService);
 
 /**
  * @openapi
@@ -258,6 +258,8 @@ router.post('/update/:id', validateToken(['company']), updateTransferService);
  *                   type: string
  *                   example: Error message
  */
-router.post('/delete/:id', validateToken(['company']), deleteTransferService);
+router.delete('/delete/:id', validateToken(['company']), deleteTransferService);
+
+router.get('/getOneService/:id', validateToken(['company']), getOneService);
 
 module.exports = router;

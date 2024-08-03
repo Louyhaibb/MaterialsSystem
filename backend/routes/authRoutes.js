@@ -17,8 +17,7 @@ const { register, login, adminlogin } = require('../controllers/authController')
  *               - email
  *               - password
  *               - role
- *               - name (if client)
- *               - companyName (if company)
+ *               - name
  *             properties:
  *               email:
  *                 type: string
@@ -33,8 +32,6 @@ const { register, login, adminlogin } = require('../controllers/authController')
  *               phone:
  *                 type: string
  *               address:
- *                 type: string
- *               companyName:
  *                 type: string
  *               businessLicense:
  *                 type: string

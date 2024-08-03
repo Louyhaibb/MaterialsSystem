@@ -37,7 +37,6 @@ const Login = () => {
                 position: 'top-right',
             });
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isLoading]);
 
     return (

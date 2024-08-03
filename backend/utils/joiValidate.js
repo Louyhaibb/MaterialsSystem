@@ -26,7 +26,7 @@ const registerValidation = (data) => {
 //Company Register Validation
 const registerCompanyValidation = (data) => {
     const schema = Joi.object({
-        companyName: Joi.string().required(),
+        name: Joi.string().required(),
         email: Joi.string().email().required(),
         phone: Joi.string().required(),
         businessLicense: Joi.string().required(),

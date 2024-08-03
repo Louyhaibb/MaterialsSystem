@@ -9,6 +9,7 @@ import reportWebVitals from './reportWebVitals';
 import { CookiesProvider } from 'react-cookie';
 import FullScreenLoader from './components/FullScreenLoader';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import 'nouislider/distribute/nouislider.css';
 import './index.css';
 import './assets/scss/app-loader.scss';
 

@@ -85,12 +85,12 @@ const CompanyRegister = () => {
                             <div className='mb-2'>
                                 <Label>Company Name</Label>
                                 <input
-                                    className={`form-control ${classnames({ 'is-invalid': errors.companyName })}`}
+                                    className={`form-control ${classnames({ 'is-invalid': errors.name })}`}
                                     type="text"
-                                    id="companyName"
-                                    {...register('companyName', { required: true })}
+                                    id="name"
+                                    {...register('name', { required: true })}
                                 />
-                                {errors.companyName && <small className="text-danger">Company Name is required.</small>}
+                                {errors.name && <small className="text-danger">Company Name is required.</small>}
                             </div>
                             <div className='mb-2'>
                                 <Label>Email</Label>

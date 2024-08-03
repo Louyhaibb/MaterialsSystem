@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import userImg from '../assets/images/user.png';
-import logoImg from '../assets/images/logo.png';
+import logoImg from '../assets/images/logo-2.png';
 // import cartImg from '../assets/images/cart.png';
 import { toast } from 'react-toastify';
 import { useLogoutUserMutation } from "../redux/api/userAPI";
@@ -43,7 +43,7 @@ const Header = () => {
                 <Navbar expand="md" dark>
                     <NavbarBrand
                         href={
-                            user ? (user.role === 'admin' ? '/admin/users' : '/profile') : '/'
+                            user ? (user.role === 'admin' ? '/admin/users' : user.role === 'company' ? '/company/services' : '/client/companies') : '/'
                         }>
                         <img
                             src={logoImg}
@@ -70,41 +70,55 @@ const Header = () => {
                             </>
                         )}
 
-                        {user && user.role === 'user' && (
+                        {user && user.role === 'client' && (
                             <>
-                                <Nav className="me-auto" navbar>
-                                    <NavItem className="nav-item-responsive">
-                                        <NavLink onClick={() => navigate('/shop')} style={{ color: 'white' }}>
-                                            <button className="btn btn-gray">SHOP</button>
-                                        </NavLink>
-                                    </NavItem>
-                                    <NavItem className="nav-item-responsive">
-                                        <NavLink onClick={() => navigate('/explore')} style={{ color: 'white' }}>
-                                            <button className="btn btn-gray">EXPLORE</button>
-                                        </NavLink>
-                                    </NavItem>
-                                </Nav>
                                 <Nav className="ms-auto" navbar>
-                                    {/* <NavItem className="nav-item-responsive">
-                                        <NavLink onClick={() => navigate('/mycart')}>
-                                            <img src={cartImg} alt="Cart" className="user-img" />
+                                    <NavItem className="nav-item-responsive px-3">
+                                        <NavLink onClick={() => navigate('/client/companies')} style={{ color: 'white' }}>
+                                            Transfer Company
                                         </NavLink>
-                                    </NavItem> */}
+                                    </NavItem>
+                                    <NavItem className="nav-item-responsive px-3">
+                                        <NavLink onClick={() => navigate('/client/services')} style={{ color: 'white' }}>
+                                            Services
+                                        </NavLink>
+                                    </NavItem>
                                     <UncontrolledDropdown nav inNavbar>
                                         <DropdownToggle nav caret style={{ color: 'white' }}>
                                             <img src={user.avatar || userImg} alt="user" className="user-img" />
                                         </DropdownToggle>
                                         <DropdownMenu end>
                                             <DropdownItem tag={Link} to="/profile">
-                                                <span className="align-middle">PROFILE</span>
+                                                <span className="align-middle">Profile</span>
                                             </DropdownItem>
-                                            <DropdownItem onClick={onLogoutHandler}>SIGN OUT</DropdownItem>
+                                            <DropdownItem onClick={onLogoutHandler}>Logout</DropdownItem>
                                         </DropdownMenu>
                                     </UncontrolledDropdown>
                                 </Nav>
                             </>
                         )}
-
+                        {user && user.role === 'company' && (
+                            <>
+                                <Nav className="ms-auto" navbar>
+                                    <NavItem className="nav-item-responsive px-3">
+                                        <NavLink onClick={() => navigate('/company/services')} style={{ color: 'white' }}>
+                                            Sevices
+                                        </NavLink>
+                                    </NavItem>
+                                    <UncontrolledDropdown nav inNavbar>
+                                        <DropdownToggle nav caret style={{ color: 'white' }}>
+                                            <img src={user.avatar || userImg} alt="user" className="user-img" />
+                                        </DropdownToggle>
+                                        <DropdownMenu end>
+                                            <DropdownItem tag={Link} to="/profile">
+                                                <span className="align-middle">Profile</span>
+                                            </DropdownItem>
+                                            <DropdownItem onClick={onLogoutHandler}>Logout</DropdownItem>
+                                        </DropdownMenu>
+                                    </UncontrolledDropdown>
+                                </Nav>
+                            </>
+                        )}
                         {user && user.role === 'admin' && (
                             <>
                                 <Nav className="ms-auto" navbar>
@@ -123,7 +137,7 @@ const Header = () => {
                                             <img src={user.avatar || userImg} alt="user" className="user-img" />
                                         </DropdownToggle>
                                         <DropdownMenu end>
-                                            <DropdownItem onClick={onLogoutHandler}>LOG OUT</DropdownItem>
+                                            <DropdownItem onClick={onLogoutHandler}>Logout</DropdownItem>
                                         </DropdownMenu>
                                     </UncontrolledDropdown>
                                 </Nav>

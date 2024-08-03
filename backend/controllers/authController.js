@@ -26,22 +26,27 @@ exports.register = async (req, res) => {
     const hashPassword = await bcrypt.hash(req.body.password, salt);
     let userRegData = {};
     try {
-
+        const { lat, lng } = req.body.address.geometry.location;
         if (req.body.role == 'client') {
             userRegData = {
                 name: req.body.name,
                 email: req.body.email,
                 phone: req.body.phone,
-                address: req.body.address,
+                address: req.body.address.formatted_address,
+                latitude: lat,
+                longitude: lng,
                 password: hashPassword,
                 role: req.body.role,
             }
         } else {
             userRegData = {
-                companyName: req.body.companyName,
+                name: req.body.name,
                 email: req.body.email,
                 phone: req.body.phone,
                 businessLicense: req.body.businessLicense,
+                address: req.body.address.formatted_address,
+                latitude: lat,
+                longitude: lng,
                 password: hashPassword,
                 role: req.body.role,
             }

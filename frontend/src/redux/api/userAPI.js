@@ -11,19 +11,19 @@ export const userAPI = createApi({
         createUser: builder.mutation({
             query(user) {
                 return {
-                    url: '/users',
+                    url: '/users/create',
                     method: 'POST',
                     credentials: 'include',
                     body: user,
                 };
             },
             invalidatesTags: [{ type: 'Users', id: 'LIST' }],
-            transformResponse: (result) => result.data.user,
+            transformResponse: (result) => result,
         }),
         updateUser: builder.mutation({
-            query(user) {
+            query({ id, user }) {
                 return {
-                    url: `/users/update/profile`,
+                    url: `/users/update/${id}`,
                     method: 'PUT',
                     credentials: 'include',
                     body: user,
@@ -41,16 +41,17 @@ export const userAPI = createApi({
         getUser: builder.query({
             query(id) {
                 return {
-                    url: `/users/${id}`,
+                    url: `/users/getOneUser/${id}`,
                     credentials: 'include',
                 };
             },
             providesTags: (_result, _error, id) => [{ type: 'Users', id }],
         }),
         getUsers: builder.query({
-            query() {
+            query(args) {
                 return {
                     url: `/users`,
+                    params: { ...args },
                     credentials: 'include',
                 };
             },
@@ -64,7 +65,7 @@ export const userAPI = createApi({
                         { type: 'Users', id: 'LIST' },
                     ]
                     : [{ type: 'Users', id: 'LIST' }],
-            transformResponse: (results) => results.users,
+            transformResponse: (results) => results,
         }),
         getProfile: builder.query({
             query() {
@@ -85,12 +86,28 @@ export const userAPI = createApi({
             },
             invalidatesTags: [{ type: 'Users', id: 'LIST' }],
         }),
-        uploadProfileImg: builder.mutation({
+        uploadAvatarImg: builder.mutation({
             query(avatarFile) {
                 var formData = new FormData();
                 formData.append('avatarFile', avatarFile);
                 return {
                     url: '/users/upload/avatarFile',
+                    method: 'PUT',
+                    credentials: 'include',
+                    body: formData
+                };
+            },
+            invalidatesTags: [{ type: 'Users', id: 'LIST' }],
+            transformResponse(result) {
+                return result;
+            },
+        }),
+        uploadProfileImg: builder.mutation({
+            query(avatarFile) {
+                var formData = new FormData();
+                formData.append('avatarFile', avatarFile);
+                return {
+                    url: '/users/upload/profile/avatarFile',
                     method: 'PUT',
                     credentials: 'include',
                     body: formData
@@ -136,7 +153,9 @@ export const {
     useDeleteUserMutation,
     useUpdateUserMutation,
     useGetUsersQuery,
+    useGetUserQuery,
     useGetProfileQuery,
     useUploadProfileImgMutation,
     useLogoutUserMutation,
+    useUploadAvatarImgMutation,
 } = userAPI;

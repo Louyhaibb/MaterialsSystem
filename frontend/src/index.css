@@ -225,13 +225,89 @@ a {
   --bs-btn-border-color: #fff;
   --bs-btn-hover-color: #fff;
   --bs-btn-hover-bg: #d9aa00;
-  --bs-btn-hover-border-color: #0e2106;
+  --bs-btn-hover-border-color: #bf9600;
   --bs-btn-focus-shadow-rgb: 255, 208, 38;
   --bs-btn-active-color: #fff;
-  --bs-btn-active-bg: #0e2106;
+  --bs-btn-active-bg: #bf9600;
   --bs-btn-active-border-color: #bf9600;
   --bs-btn-active-shadow: inset 0 100px 100px rgba(0, 0, 0, 0.125);
   --bs-btn-disabled-color: #fff;
   --bs-btn-disabled-bg: #ffc800;
   --bs-btn-disabled-border-color: #ffc800;
+}
+
+.input-group-text {
+  padding: 0.571rem 1rem;
+  text-align: center;
+  background-color: #fff;
+  border: 1px solid #d8d6de;
+  border-radius: 0.357rem;
+  display: flex;
+  align-items: center;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.45;
+  color: #6e6b7b;
+  white-space: nowrap;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.input-group:not(.bootstrap-touchspin):focus-within .form-control, .input-group:not(.bootstrap-touchspin):focus-within .input-group-text {
+  border-color: #0e2106;
+  box-shadow: none;
+}
+
+.input-group {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  width: 100%;
+}
+
+.noUi-target {
+  background-color: rgba(115, 103, 240, 0.12);
+  border-width: 0;
+  box-shadow: none;
+  border-radius: 1rem;
+}
+
+.noUi-connect {
+  background: #0e2106;
+  box-shadow: none;
+}
+
+.noUi-horizontal {
+  height: 8px;
+}
+
+.noUi-horizontal .noUi-handle {
+  width: 10px;
+  height: 15px;
+  right: -8px;
+  top: -4px;
+}
+
+.noUi-handle:before, .noUi-handle:after {
+  content: "";
+  display: block;
+  position: absolute;
+  height: 14px;
+  width: 1px;
+  background: none;
+  left: 14px;
+  top: 6px;
+}
+
+.noUi-tooltip {
+  display: block;
+  position: absolute;
+  border: 1px solid #D9D9D9;
+  border-radius: 3px;
+  background: #fff;
+  color: #000;
+  padding: 0px;
+  text-align: center;
+  white-space: nowrap;
+  font-size: 10px;
 }
