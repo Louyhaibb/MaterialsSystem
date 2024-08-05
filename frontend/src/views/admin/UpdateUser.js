@@ -70,7 +70,6 @@ const UpdateUser = () => {
     };
 
     useEffect(() => {
-        console.log(isSuccess, isError, data);
         if (isSuccess) {
             toast.success(data?.message);
             navigate('/admin/users');
@@ -228,7 +227,8 @@ const UpdateUser = () => {
                                                                 setAddressObj(place.formatted_address);
                                                             }}
                                                             options={{
-                                                                types: ['address']
+                                                                types: ['address'],
+                                                                componentRestrictions: { country: 'il' }
                                                             }}
                                                             defaultValue={addressObj || ''} // Set the initial value for address
                                                         />

@@ -1,28 +1,65 @@
 const Service = require('../models/Service');
+const User = require('../models/User');
+const { getDistanceFromLatLonInKm } = require('../utils/utils');
 
 exports.getServices = async (req, res) => {
     try {
-        const filter = req.user.role == 'company' ? { company: req.user._id, status: 'pending' } : { status: 'pending' };
-        let minDistance;
-        let maxDistance;
-        console.log(req.query)
+        // Determine the filter based on user role
+        const filter = req.user.role === 'company' 
+            ? { company: req.user._id } 
+            : {};
+        
+        let minDistance = 0;
+        let maxDistance = Infinity;
+
+        // Handling distance range filter
         if (req.query.distance) {
-            const distanceRange = req.query.distance?.split(',');
-            minDistance = distanceRange[0];
-            maxDistance = distanceRange[1];
+            const distanceRange = req.query.distance.split(',').map(Number);
+            if (!isNaN(distanceRange[0])) minDistance = distanceRange[0];
+            if (!isNaN(distanceRange[1])) maxDistance = distanceRange[1];
         }
-        const services = await Service.find(filter).populate({
+
+        const user = await User.findById(req.user._id);
+        if (!user) return res.status(404).send({ message: 'User not found' });
+
+        const { latitude, longitude } = user;
+
+        // Handling price range filter
+        if (req.query.price) {
+            const [minPrice, maxPrice] = req.query.price.split(',').map(Number);
+            if (!isNaN(minPrice) && !isNaN(maxPrice)) {
+                filter.basePrice = { $gte: minPrice, $lte: maxPrice };
+            }
+        }
+
+        // Handling service type filter
+        if (req.query.serviceType) {
+            const serviceTypes = req.query.serviceType.split(',');
+            filter.serviceType = { $in: serviceTypes };
+        }
+
+        // Fetch services and populate company details
+        let services = await Service.find(filter).populate({
             path: 'company',
-            select: {
-                _id: 1, name: 1, email: 1, businessLicense: 1
-            },
+            select: '_id name email businessLicense'
         });
+
+        // Filtering services by distance
+        services = services.filter(service => {
+            if (service.latitude != null && service.longitude != null) {
+                const distance = getDistanceFromLatLonInKm(latitude, longitude, service.latitude, service.longitude);
+                return distance >= minDistance && distance <= maxDistance;
+            }
+            return false;
+        });
+
         return res.send(services);
     } catch (err) {
         console.error(err.message);
         return res.status(500).send({ status: "error", message: err.message });
     }
 };
+
 
 exports.getOneService = async (req, res) => {
     const service = await Service.findOne({ _id: req.params.id });

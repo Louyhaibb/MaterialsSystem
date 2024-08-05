@@ -79,8 +79,8 @@ router.get('/', validateToken(['company', 'client']), getServices);
  *             properties:
  *               serviceType:
  *                 type: string
- *                 enum: ['office', 'apartment', 'small transfer', 'warehouse', 'history']
- *                 example: office
+ *                 enum: ['Office', 'Apartment', 'Small Transfer', 'Warehouse', 'History']
+ *                 example: Office
  *               description:
  *                 type: string
  *                 example: "This is a description of the service."

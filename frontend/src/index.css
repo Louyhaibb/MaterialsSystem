@@ -172,6 +172,12 @@ header {
   width: auto;
 }
 
+.company-image {
+  height: 80px;
+  width: auto;
+  border-radius: 10px;
+}
+
 .navbar-toggler {
   border: none;
 }
@@ -310,4 +316,98 @@ a {
   text-align: center;
   white-space: nowrap;
   font-size: 10px;
+}
+
+.react-dataTable {
+  width: 100%;
+  overflow-x: auto;
+}
+
+@media (max-width: 768px) {
+  .react-dataTable-wrapper {
+      margin-bottom: 15px;
+  }
+
+  .react-dataTable table, .react-dataTable th, .react-dataTable td {
+      font-size: 14px;
+  }
+}
+
+.detail-card {
+  border: 1px solid #dee2e6;
+  border-radius: 0.25rem;
+  box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.05);
+}
+
+.detail-item {
+  font-size: 1rem;
+  margin-bottom: 10px;
+}
+
+.services-section {
+  margin-top: 1rem;
+}
+
+.service-item {
+  background: #ffffff;
+  border: 1px solid #dee2e6;
+  border-radius: 0.25rem;
+  padding: 15px;
+  margin-bottom: 10px;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+.service-type, .service-name {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #343a40;
+  margin-bottom: 5px;
+}
+
+.service-description {
+  font-size: 0.95rem;
+  color: #0e2106;
+  margin-bottom: 10px;
+}
+
+.service-price {
+  font-size: 1rem;
+  color: #0e2106;
+}
+
+.total-price {
+  font-size: 1.25rem;
+  color: #28a745;
+  border-top: 1px solid #dee2e6;
+  padding-top: 10px;
+}
+
+.section-title {
+  font-size: 1.2rem;
+  color: #343a40;
+  margin-bottom: 10px;
+}
+
+.item-rating {
+  margin-bottom: 0.3rem;
+}
+
+.item-rating ul {
+  margin-bottom: 0;
+}
+
+.item-rating svg, .item-rating i {
+  height: 1.5rem;
+  width: 1.5rem;
+  font-size: 1.5rem;
+}
+
+.filled-star {
+  fill: #ff9f43;
+  stroke: #ff9f43;
+  color: #ff9f43;
+}
+
+ul.list-inline li {
+  display: inline-block;
 }

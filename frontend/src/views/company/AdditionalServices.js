@@ -1,20 +1,19 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from 'react-toastify';
 import DataTable from 'react-data-table-component';
+import { useDeleteAdditionalServiceMutation, useGetAdditionalServicesQuery } from "../../redux/api/additionalServiceAPI";
 import { Col, Container, Row, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem, Card, Modal, ModalHeader, ModalBody, ModalFooter, Button, Badge } from "reactstrap";
-import { useDeleteServiceMutation, useGetServicesQuery } from "../../redux/api/serviceAPI";
 import { ChevronDown, Edit, MoreVertical, Trash2 } from "react-feather";
-import { getDateFormat } from "../../utils/Utils";
+import { useEffect, useState } from "react";
 
-const CompanyServices = () => {
+const AdditionalServices = () => {
     const navigate = useNavigate();
     const paginationRowsPerPageOptions = [15, 30, 50, 100];
-    const { data: services, refetch } = useGetServicesQuery();
+    const { data: additionalServices, refetch } = useGetAdditionalServicesQuery();
     const [modalVisibility, setModalVisibility] = useState(false);
     const [selectedServiceId, setSelectedServiceId] = useState(null);
-    const [deleteService, { isLoading, isError, error, isSuccess, data }] = useDeleteServiceMutation();
+    const [deleteAdditionalService, { isLoading, isError, error, isSuccess, data }] = useDeleteAdditionalServiceMutation();
     useEffect(() => {
         refetch()
     }, []);
@@ -25,7 +24,7 @@ const CompanyServices = () => {
     }
 
     const handleDeleteUser = (id) => {
-        deleteService(id);
+        deleteAdditionalService(id);
         setModalVisibility(false);
     };
 
@@ -37,7 +36,7 @@ const CompanyServices = () => {
     useEffect(() => {
         if (isSuccess) {
             toast.success(data?.message);
-            navigate('/company/services');
+            navigate('/company/additional-services');
         }
         if (isError) {
             const errorMsg = error.data && error.data.message ? error.data.message : error.data;
@@ -47,17 +46,21 @@ const CompanyServices = () => {
         }
     }, [isLoading]);
 
-    const capitalizeFirstLetter = (str) => {
-        if (!str) return '';
-        return str.charAt(0).toUpperCase() + str.slice(1);
-    };
-
     const columns = () => [
         {
-            name: 'Service Type',
+            name: 'Additional Service Name',
             selector: (row = {}) => (
                 <Badge color="primary" className="p-2">
-                    {capitalizeFirstLetter(row.serviceType || '')}
+                    {row.serviceName || ''}
+                </Badge>
+            ),
+            sortable: true
+        },
+        {
+            name: 'Service Name',
+            selector: (row = {}) => (
+                <Badge color="info" className="p-2">
+                    {row.service?.serviceType || ''}
                 </Badge>
             ),
             sortable: true
@@ -68,22 +71,10 @@ const CompanyServices = () => {
             sortable: true
         },
         {
-            name: 'Base Price',
-            width: '120px',
-            selector: (row = {}) => `${row.basePrice}`,
+            name: 'Unit Price',
+            selector: (row = {}) => `${row.unitPrice}`,
             sortable: true
         },
-        {
-            name: 'Availability',
-            selector: (row = {}) => getDateFormat(row.availability) || '',
-            sortable: true
-        },
-        {
-            name: 'Address',
-            selector: (row = {}) => row.address || '',
-            sortable: true
-        },
-
         {
             name: 'Actions',
             width: '120px',
@@ -95,7 +86,7 @@ const CompanyServices = () => {
                                 <MoreVertical size={14} className="cursor-pointer action-btn" />
                             </DropdownToggle>
                             <DropdownMenu end container="body">
-                                <DropdownItem className="w-100" onClick={() => navigate(`/company/services/update-service/${row._id}`)}>
+                                <DropdownItem className="w-100" onClick={() => navigate(`/company/additional-services/update-service/${row._id}`)}>
                                     <Edit size={14} className="mr-50" />
                                     <span className="align-middle mx-2">Update</span>
                                 </DropdownItem>
@@ -116,18 +107,18 @@ const CompanyServices = () => {
             <Container>
                 <Row className="my-3">
                     <Col>
-                        <h4 className="main-title">Company Service</h4>
+                        <h4 className="main-title">Additional Services</h4>
                     </Col>
                 </Row>
                 <Row className="my-3">
                     <Col>
-                        <a href="/company/services/create-service" className="btn btn-orange btn-sm">Create Sevice</a>
+                        <a href="/company/additional-services/create-service" className="btn btn-orange btn-sm">Create Additional Sevice</a>
                     </Col>
                 </Row>
                 <Card>
                     <DataTable
-                        title="Services"
-                        data={services}
+                        title="Additional Services"
+                        data={additionalServices}
                         responsive
                         className="react-dataTable"
                         noHeader
@@ -154,4 +145,4 @@ const CompanyServices = () => {
     )
 }
 
-export default CompanyServices;
+export default AdditionalServices;

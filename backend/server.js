@@ -40,9 +40,9 @@ app.get('/', (req, res) => {
 app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/users', require('./routes/userRoutes'));
 app.use('/api/services', require('./routes/serviceRoutes'));
-// app.use('/api/client', require('./routes/clientRoutes'));
-// app.use('/api/order', require('./routes/orderRoutes'));
-// app.use('/api/admin', require('./routes/adminRoutes'));
+app.use('/api/additional-services', require('./routes/additionalServiceRoutes'));
+app.use('/api/orders', require('./routes/orderRoutes'));
+app.use('/api/reviews', require('./routes/reviewRoutes'));
 
 // Extended: https://swagger.io/specification/#infoObject
 const swaggerOptions = {

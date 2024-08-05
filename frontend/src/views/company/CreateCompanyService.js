@@ -81,11 +81,11 @@ const CreateCompanyService = () => {
                                                     {...register('serviceType', { required: true })}
                                                 >
                                                     <option value="">Select an Service</option>
-                                                    <option value="office">Office</option>
-                                                    <option value="apartment">Apartment</option>
-                                                    <option value="small transfer">Small transfer</option>
-                                                    <option value="warehouse">Warehouse</option>
-                                                    <option value="history">History</option>
+                                                    <option value="Office">Office</option>
+                                                    <option value="Apartment">Apartment</option>
+                                                    <option value="Small Transfer">Small Transfer</option>
+                                                    <option value="Warehouse">Warehouse</option>
+                                                    <option value="History">History</option>
                                                 </select>
                                                 {errors.serviceType && <small className="text-danger">Service Type is required.</small>}
                                             </div>
@@ -127,7 +127,8 @@ const CreateCompanyService = () => {
                                                         setAddressObj(place);
                                                     }}
                                                     options={{
-                                                        types: ['address']
+                                                        types: ['address'],
+                                                        componentRestrictions: { country: 'il' }
                                                     }}
                                                 />
                                                 {Object.keys(errors).length && errors.address ? <small className="text-danger mt-1">{errors.address.message}</small> : null}

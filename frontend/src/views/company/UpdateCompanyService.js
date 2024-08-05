@@ -65,7 +65,6 @@ const UpdateCompanyService = () => {
             data.address = addressObj;
             updateCompanyService({ id: id, service: data });
         }
-        console.log(data)
     }
 
     useEffect(() => {
@@ -103,11 +102,11 @@ const UpdateCompanyService = () => {
                                                     {...register('serviceType', { required: true })}
                                                 >
                                                     <option value="">Select a Service</option>
-                                                    <option value="office">Office</option>
-                                                    <option value="apartment">Apartment</option>
-                                                    <option value="small transfer">Small transfer</option>
-                                                    <option value="warehouse">Warehouse</option>
-                                                    <option value="history">History</option>
+                                                    <option value="Office">Office</option>
+                                                    <option value="Apartment">Apartment</option>
+                                                    <option value="Small Transfer">Small Transfer</option>
+                                                    <option value="Warehouse">Warehouse</option>
+                                                    <option value="History">History</option>
                                                 </select>
                                                 {errors.serviceType && <small className="text-danger">Service Type is required.</small>}
                                             </div>
@@ -149,7 +148,8 @@ const UpdateCompanyService = () => {
                                                         setAddressObj(place);
                                                     }}
                                                     options={{
-                                                        types: ['address']
+                                                        types: ['address'],
+                                                        componentRestrictions: { country: 'il' }
                                                     }}
                                                     defaultValue={addressObj || ''} // Set the initial value for address
                                                 />

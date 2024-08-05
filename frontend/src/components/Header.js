@@ -62,8 +62,8 @@ const Header = () => {
                                             <img src={userImg} alt="user" className="user-img" />
                                         </DropdownToggle>
                                         <DropdownMenu end>
-                                            <DropdownItem onClick={() => navigate('/login')}>SIGN IN</DropdownItem>
-                                            <DropdownItem onClick={() => navigate('/register')}>SIGN UP</DropdownItem>
+                                            <DropdownItem onClick={() => navigate('/login')}>Login</DropdownItem>
+                                            <DropdownItem onClick={() => navigate('/register')}>Register</DropdownItem>
                                         </DropdownMenu>
                                     </UncontrolledDropdown>
                                 </Nav>
@@ -73,14 +73,19 @@ const Header = () => {
                         {user && user.role === 'client' && (
                             <>
                                 <Nav className="ms-auto" navbar>
-                                    <NavItem className="nav-item-responsive px-3">
+                                    <NavItem className="nav-item-responsive px-1">
                                         <NavLink onClick={() => navigate('/client/companies')} style={{ color: 'white' }}>
                                             Transfer Company
                                         </NavLink>
                                     </NavItem>
-                                    <NavItem className="nav-item-responsive px-3">
+                                    <NavItem className="nav-item-responsive px-1">
                                         <NavLink onClick={() => navigate('/client/services')} style={{ color: 'white' }}>
                                             Services
+                                        </NavLink>
+                                    </NavItem>
+                                    <NavItem className="nav-item-responsive px-1">
+                                        <NavLink onClick={() => navigate('/client/orders')} style={{ color: 'white' }}>
+                                            Orders
                                         </NavLink>
                                     </NavItem>
                                     <UncontrolledDropdown nav inNavbar>
@@ -88,7 +93,7 @@ const Header = () => {
                                             <img src={user.avatar || userImg} alt="user" className="user-img" />
                                         </DropdownToggle>
                                         <DropdownMenu end>
-                                            <DropdownItem tag={Link} to="/profile">
+                                            <DropdownItem tag={Link} to="/client/profile">
                                                 <span className="align-middle">Profile</span>
                                             </DropdownItem>
                                             <DropdownItem onClick={onLogoutHandler}>Logout</DropdownItem>
@@ -100,9 +105,19 @@ const Header = () => {
                         {user && user.role === 'company' && (
                             <>
                                 <Nav className="ms-auto" navbar>
-                                    <NavItem className="nav-item-responsive px-3">
+                                    <NavItem className="nav-item-responsive px-1">
                                         <NavLink onClick={() => navigate('/company/services')} style={{ color: 'white' }}>
                                             Sevices
+                                        </NavLink>
+                                    </NavItem>
+                                    <NavItem className="nav-item-responsive px-1">
+                                        <NavLink onClick={() => navigate('/company/additional-services')} style={{ color: 'white' }}>
+                                            Additional Sevices
+                                        </NavLink>
+                                    </NavItem>
+                                    <NavItem className="nav-item-responsive px-1">
+                                        <NavLink onClick={() => navigate('/company/orders')} style={{ color: 'white' }}>
+                                            Orders
                                         </NavLink>
                                     </NavItem>
                                     <UncontrolledDropdown nav inNavbar>
@@ -110,7 +125,7 @@ const Header = () => {
                                             <img src={user.avatar || userImg} alt="user" className="user-img" />
                                         </DropdownToggle>
                                         <DropdownMenu end>
-                                            <DropdownItem tag={Link} to="/profile">
+                                            <DropdownItem tag={Link} to="/company/profile">
                                                 <span className="align-middle">Profile</span>
                                             </DropdownItem>
                                             <DropdownItem onClick={onLogoutHandler}>Logout</DropdownItem>
@@ -122,17 +137,17 @@ const Header = () => {
                         {user && user.role === 'admin' && (
                             <>
                                 <Nav className="ms-auto" navbar>
-                                    <NavItem className="nav-item-responsive px-3">
+                                    <NavItem className="nav-item-responsive px-1">
                                         <NavLink onClick={() => navigate('/admin/users')} style={{ color: 'white' }}>
                                             Users
                                         </NavLink>
                                     </NavItem>
-                                    <NavItem className="nav-item-responsive px-3">
+                                    <NavItem className="nav-item-responsive px-1">
                                         <NavLink onClick={() => navigate('/admin/statistics')} style={{ color: 'white' }}>
                                             Statistics
                                         </NavLink>
                                     </NavItem>
-                                    <UncontrolledDropdown nav inNavbar className="px-3">
+                                    <UncontrolledDropdown nav inNavbar className="px-1">
                                         <DropdownToggle nav caret style={{ color: 'white' }}>
                                             <img src={user.avatar || userImg} alt="user" className="user-img" />
                                         </DropdownToggle>

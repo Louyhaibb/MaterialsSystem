@@ -28,7 +28,6 @@ const ClientServices = () => {
     useEffect(() => {
         refetch()
     }, []);
-    console.log(services)
 
     const truncateText = (text, maxLength) => {
         if (text.length <= maxLength) return text;
@@ -123,8 +122,6 @@ const ClientServices = () => {
         }
     ];
 
-
-
     return (
         <div className="main-view">
             <Container>
@@ -172,11 +169,11 @@ const ClientServices = () => {
                                         multiple={true}
                                         onChange={handleServiceTypeChange}
                                     >
-                                        <option value="office">Office</option>
-                                        <option value="apartment">Apartment</option>
-                                        <option value="small transfer">Small transfer</option>
-                                        <option value="warehouse">Warehouse</option>
-                                        <option value="history">History</option>
+                                        <option value="Office">Office</option>
+                                        <option value="Apartment">Apartment</option>
+                                        <option value="Small Transfer">Small Transfer</option>
+                                        <option value="Warehouse">Warehouse</option>
+                                        <option value="History">History</option>
                                     </select>
                                     <div className="selected-services mt-3">
                                         {selectedServiceTypes.map(serviceType => (

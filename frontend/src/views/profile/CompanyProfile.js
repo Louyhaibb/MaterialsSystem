@@ -1,31 +1,45 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Card, CardBody, Col, Container, Form, Row, Label, Button } from "reactstrap";
+import { getMeAPI } from "../../redux/api/getMeAPI";
 import { useForm } from 'react-hook-form';
 import { useEffect, useState } from "react";
 import { toast } from 'react-toastify';
 import uploadImg from "../../assets/images/company.png";
 import classnames from 'classnames';
 import Autocomplete from 'react-google-autocomplete';
-import { useCreateUserMutation, useUploadAvatarImgMutation } from "../../redux/api/userAPI";
-import { useNavigate } from "react-router-dom";
+import { useGetUserQuery, useUpdateUserMutation, useUploadAvatarImgMutation } from "../../redux/api/userAPI";
+import { useNavigate, useParams } from "react-router-dom";
 import { isObjEmpty } from "../../utils/Utils";
 
-const CreateUser = () => {
+const CompanyProfile = () => {
+    const { data: user, isLoading } = getMeAPI.endpoints.getMe.useQuery(null);
     const navigate = useNavigate();
     const [avatarFile, setAvatarFile] = useState(null);
     const [addressObj, setAddressObj] = useState();
     const [imagePreviewUrl, setImagePreviewUrl] = useState(null);
     const [selectedRole, setSelectedRole] = useState(""); // Added state for selected role
     const [uploadAvatarImg] = useUploadAvatarImgMutation();
-    const [createUser, { isLoading, isSuccess, error, isError, data }] = useCreateUserMutation();
+    const [updateUser, { isLoading: updateIsLoading, isSuccess, error, isError, data }] = useUpdateUserMutation();
     const {
         register,
         handleSubmit,
         clearErrors,
         setError,
+        setValue,
         formState: { errors }
     } = useForm();
-
+    console.log(user)
+    useEffect(() => {
+        if (user) {
+            const fields = ['name', 'email', 'phone', 'role', 'businessLicense'];
+            fields.forEach((field) => setValue(field, user[field]));
+            if (user.avatar) {
+                setImagePreviewUrl(user.avatar);
+            }
+            setAddressObj(user.address);
+            setSelectedRole(user.role); // Update selectedRole state based on user data
+        }
+    }, [user]);
     const onSubmit = (data) => {
         if (avatarFile) {
             data.avatar = avatarFile;
@@ -46,14 +60,14 @@ const CreateUser = () => {
                 delete data.businessLicense;
             }
 
-            createUser(data);
+            // updateUser({ id: id, user: data });
         }
     };
 
     useEffect(() => {
         if (isSuccess) {
             toast.success(data?.message);
-            navigate('/admin/users');
+            // navigate('/admin/users');
         }
         if (isError) {
             const errorMsg = error.data && error.data.message ? error.data.message : error.data;
@@ -61,7 +75,7 @@ const CreateUser = () => {
                 position: 'top-right',
             });
         }
-    }, [isLoading]);
+    }, [updateIsLoading]);
 
     const handleImageChange = async (e) => {
         e.preventDefault();
@@ -93,7 +107,7 @@ const CreateUser = () => {
             <Container>
                 <Row className="my-3">
                     <Col>
-                        <h4 className="main-title">Create User</h4>
+                        <h4 className="main-title">Profile</h4>
                     </Col>
                 </Row>
                 <Row>
@@ -175,7 +189,7 @@ const CreateUser = () => {
                                                             {...register('role', { required: true })}
                                                             onChange={(e) => setSelectedRole(e.target.value)} // Update selectedRole on change
                                                         >
-                                                            <option value="">Select an Role</option>
+                                                            <option value="">Select a Role</option>
                                                             <option value="admin">Admin</option>
                                                             <option value="client">Client</option>
                                                             <option value="company">Transfer Company</option>
@@ -191,51 +205,37 @@ const CreateUser = () => {
                                                                 className={`form-control ${classnames({ 'is-invalid': errors.businessLicense })}`}
                                                                 type="text"
                                                                 id="businessLicense"
-                                                                {...register('businessLicense', { required: selectedRole === "company" })}
+                                                                {...register('businessLicense', { required: true })}
                                                             />
                                                             {errors.businessLicense && <small className="text-danger">Business License Number is required.</small>}
                                                         </div>
                                                     </Col>
                                                 )}
-                                                <Col md="6">
+                                                <Col md="12">
                                                     <div className='mb-2'>
                                                         <Label>Address</Label>
                                                         <Autocomplete
                                                             className="form-control"
                                                             apiKey={process.env.REACT_APP_GOOGLE_API_KEY}
-                                                            onChange={(e) => setAddressObj()}
                                                             onPlaceSelected={(place) => {
                                                                 clearErrors('address');
-                                                                setAddressObj(place);
+                                                                setAddressObj(place.formatted_address);
                                                             }}
                                                             options={{
                                                                 types: ['address'],
                                                                 componentRestrictions: { country: 'il' }
                                                             }}
+                                                            defaultValue={addressObj || ''} // Set the initial value for address
                                                         />
                                                         {Object.keys(errors).length && errors.address ? <small className="text-danger mt-1">{errors.address.message}</small> : null}
                                                     </div>
                                                 </Col>
-                                                <Col md="6">
-                                                    <div className='mb-2'>
-                                                        <Label>Password</Label>
-                                                        <input
-                                                            className={`form-control ${classnames({ 'is-invalid': errors.password })}`}
-                                                            type="password"
-                                                            id="password"
-                                                            {...register('password', { required: true })}
-                                                        />
-                                                        {errors.password && <small className="text-danger">Password is required.</small>}
-                                                    </div>
-                                                </Col>
                                             </Row>
-
                                             <div className="mt-4">
-                                                <Button color="orange" className="btn-block" type="submit">
+                                                <Button color="orange" className="btn-block" type="submit" disabled={isLoading}>
                                                     Submit
                                                 </Button>
                                             </div>
-
                                         </Col>
                                     </Row>
                                 </Form>
@@ -248,4 +248,4 @@ const CreateUser = () => {
     )
 }
 
-export default CreateUser;
+export default CompanyProfile;

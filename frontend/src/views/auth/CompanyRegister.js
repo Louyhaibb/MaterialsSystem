@@ -133,7 +133,8 @@ const CompanyRegister = () => {
                                         setAddressObj(place);
                                     }}
                                     options={{
-                                        types: ['address']
+                                        types: ['address'],
+                                        componentRestrictions: { country: 'il' }
                                     }}
                                 />
                                 {Object.keys(errors).length && errors.address ? <small className="text-danger mt-1">{errors.address.message}</small> : null}

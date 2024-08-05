@@ -45,3 +45,4 @@ export const getDateFormat = (formattedDate) => {
     const formattedDateTime = moment(formattedDateMoment).format('llll');
     return formattedDateTime;
 };
+
