@@ -10,6 +10,11 @@ const ReviewSchema = new mongoose.Schema({
         unique: true,
         required: true,
     },
+}, {
+    timestamps: {
+        createdAt: 'createdAt',
+        updatedAt: 'updatedAt',
+    }
 });
 
 module.exports = mongoose.model('Review', ReviewSchema);

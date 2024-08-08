@@ -7,19 +7,17 @@ import { toast } from 'react-toastify';
 import uploadImg from "../../assets/images/company.png";
 import classnames from 'classnames';
 import Autocomplete from 'react-google-autocomplete';
-import { useGetUserQuery, useUpdateUserMutation, useUploadAvatarImgMutation } from "../../redux/api/userAPI";
-import { useNavigate, useParams } from "react-router-dom";
+import { useUpdateUserMutation, useUploadProfileImgMutation } from "../../redux/api/userAPI";
 import { isObjEmpty } from "../../utils/Utils";
 
 const CompanyProfile = () => {
     const { data: user, isLoading } = getMeAPI.endpoints.getMe.useQuery(null);
-    const navigate = useNavigate();
     const [avatarFile, setAvatarFile] = useState(null);
     const [addressObj, setAddressObj] = useState();
     const [imagePreviewUrl, setImagePreviewUrl] = useState(null);
-    const [selectedRole, setSelectedRole] = useState(""); // Added state for selected role
-    const [uploadAvatarImg] = useUploadAvatarImgMutation();
-    const [updateUser, { isLoading: updateIsLoading, isSuccess, error, isError, data }] = useUpdateUserMutation();
+    const [selectedRole, setSelectedRole] = useState("");
+    const [uploadProfileImg] = useUploadProfileImgMutation();
+    const [updateUser, { isLoading: updateIsLoading, isSuccess, error, isError }] = useUpdateUserMutation();
     const {
         register,
         handleSubmit,
@@ -28,7 +26,7 @@ const CompanyProfile = () => {
         setValue,
         formState: { errors }
     } = useForm();
-    console.log(user)
+
     useEffect(() => {
         if (user) {
             const fields = ['name', 'email', 'phone', 'role', 'businessLicense'];
@@ -37,7 +35,7 @@ const CompanyProfile = () => {
                 setImagePreviewUrl(user.avatar);
             }
             setAddressObj(user.address);
-            setSelectedRole(user.role); // Update selectedRole state based on user data
+            setSelectedRole(user.role);
         }
     }, [user]);
     const onSubmit = (data) => {
@@ -54,20 +52,17 @@ const CompanyProfile = () => {
 
         if (isObjEmpty(errors)) {
             data.address = addressObj;
-
-            // Exclude businessLicense if role is admin or client
             if (selectedRole !== "company") {
                 delete data.businessLicense;
             }
 
-            // updateUser({ id: id, user: data });
+            updateUser({ id: user._id, user: data });
         }
     };
 
     useEffect(() => {
         if (isSuccess) {
-            toast.success(data?.message);
-            // navigate('/admin/users');
+            toast.success("Profile updated Successfully!");
         }
         if (isError) {
             const errorMsg = error.data && error.data.message ? error.data.message : error.data;
@@ -89,8 +84,9 @@ const CompanyProfile = () => {
                 };
                 reader.readAsDataURL(file);
                 try {
-                    const uploadResult = await uploadAvatarImg(file).unwrap();
-                    setAvatarFile(uploadResult.imageUri)
+                    const uploadResult = await uploadProfileImg(file).unwrap();
+                    const avatarData = uploadResult.updateAvatar.avatar;
+                    setAvatarFile(avatarData);
                 } catch (error) {
                     console.error('An error occurred during image upload:', error);
                 }

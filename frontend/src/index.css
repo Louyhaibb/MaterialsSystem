@@ -411,3 +411,10 @@ a {
 ul.list-inline li {
   display: inline-block;
 }
+
+.profile-img {
+  height: auto;
+  width: 150px;
+  border-radius: 5px;
+  cursor: pointer;
+}

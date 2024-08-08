@@ -30,6 +30,8 @@ import CompanyOrderDetail from './views/company/ComapnyOrderDetail';
 import ClientOrderDetail from './views/client/ClientOrderDetail';
 import CompanyProfile from './views/profile/CompanyProfile';
 import ClientProfile from './views/profile/ClientProfile';
+import Profile from './views/profile/Profile';
+import ClientServiceDetail from './views/client/ClientServiceDetail';
 
 const App = () => {
   const getHomeRoute = () => {
@@ -54,6 +56,8 @@ const App = () => {
             <Route path="client/orders" element={<ClientOrders />} />
             <Route path="client/orders/detail/:id" element={<ClientOrderDetail />} />
             <Route path="client/profile" element={<ClientProfile />} />
+            <Route path="client/services/detail/:id" element={<ClientServiceDetail />} />
+            <Route path="client/company-profile/:id" element={<Profile />} />
           </Route>
           <Route element={<RequiredUser allowedRoles={['company']} />}>
             <Route path="company/services" element={<CompanyServices />} />
@@ -65,6 +69,7 @@ const App = () => {
             <Route path="company/orders" element={<CompanyOrders />} />
             <Route path="company/orders/detail/:id" element={<CompanyOrderDetail />} />
             <Route path="company/profile" element={<CompanyProfile />} />
+            <Route path="company/client-profile/:id" element={<Profile />} />
           </Route>
           <Route element={<RequiredUser allowedRoles={['admin']} />}>
             <Route path="admin/users" element={<Users />} />

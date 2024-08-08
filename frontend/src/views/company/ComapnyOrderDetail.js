@@ -49,7 +49,7 @@ const CompanyOrderDetail = () => {
         }
         updateOrderStatus(data);
     };
-    
+
     const renderActionButton = (status) => {
         if (status === 'Pending') {
             return <Button color="outline-primary" onClick={handleApprove}>Approve Order</Button>;
@@ -80,7 +80,7 @@ const CompanyOrderDetail = () => {
                         <Row className="my-3">
                             <Col>
                                 <h4 className="main-title">
-                                    Order Number #{order.orderNumber} {renderStatusBadge(order.status)} 
+                                    Order Number #{order.orderNumber} {renderStatusBadge(order.status)}
                                 </h4>
                             </Col>
                         </Row>
@@ -104,7 +104,12 @@ const CompanyOrderDetail = () => {
                                         </Col>
                                         <Col md="6">
                                             <div className="mb-2 detail-item">
-                                                <strong>Client:</strong> {order.client?.name}
+                                                <span>
+                                                    <strong>Client:</strong> {order.client?.name}
+                                                </span>
+                                                <span className="mx-3">
+                                                    <a className="btn btn-orange btn-sm" href={`/company/client-profile/${order.client?._id}`}>View</a>
+                                                </span>
                                             </div>
                                             <div className="mb-2 detail-item">
                                                 <strong>Email:</strong> {order.client?.email}

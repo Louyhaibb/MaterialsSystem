@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import DataTable from 'react-data-table-component';
 import { Col, Container, Row, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem, Card, Badge, Button, CardBody } from "reactstrap";
 import { useGetServicesQuery } from "../../redux/api/serviceAPI";
-import { ChevronDown, Edit, MoreVertical } from "react-feather";
+import { ChevronDown, Eye, MoreVertical } from "react-feather";
 import { getDateFormat } from "../../utils/Utils";
 import Nouislider from 'nouislider-react';
 import wNumb from 'wnumb';
@@ -107,9 +107,9 @@ const ClientServices = () => {
                                         <MoreVertical size={14} className="cursor-pointer action-btn" />
                                     </DropdownToggle>
                                     <DropdownMenu end container="body">
-                                        <DropdownItem className="w-100" onClick={() => navigate(`/company/services/update-service/${row._id}`)}>
-                                            <Edit size={14} className="mr-50" />
-                                            <span className="align-middle mx-2">Update</span>
+                                        <DropdownItem className="w-100" onClick={() => navigate(`/client/services/detail/${row._id}`)}>
+                                            <Eye size={14} className="mr-50" />
+                                            <span className="align-middle mx-2">View</span>
                                         </DropdownItem>
 
                                     </DropdownMenu>

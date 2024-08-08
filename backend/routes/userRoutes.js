@@ -1,6 +1,6 @@
 const express = require('express');
 const validateToken = require('../utils/validateToken');
-const { getPersonalMe, logout, getUsers, uploadAvatarFile, createUser, getOneUser, updateUser, deleteUser } = require('../controllers/usersController');
+const { getPersonalMe, logout, getUsers, uploadAvatarFile, createUser, getOneUser, updateUser, deleteUser, uploadProfileFile } = require('../controllers/usersController');
 const router = express.Router();
 const multer = require("multer");
 
@@ -151,11 +151,11 @@ router.put('/upload/avatarFile', uploadProfile.single('avatarFile'), validateTok
  *       500:
  *         description: An unexpected error occurred.
  */
-router.put('/upload/profile/avatarFile', uploadProfile.single('avatarFile'), validateToken(['admin', 'company', 'client']), uploadAvatarFile);
+router.put('/upload/profile/avatarFile', uploadProfile.single('avatarFile'), validateToken(['admin', 'company', 'client']), uploadProfileFile);
 
 router.post('/create', validateToken(['admin']), createUser);
-router.put('/update/:id', validateToken(['admin']), updateUser);
-router.get('/getOneUser/:id', validateToken(['admin']), getOneUser);
+router.put('/update/:id', validateToken(['admin', 'company', 'client']), updateUser);
+router.get('/getOneUser/:id', validateToken(['admin', 'company', 'client']), getOneUser);
 router.delete('/delete/:id', validateToken(['admin']), deleteUser);
 
 module.exports = router;

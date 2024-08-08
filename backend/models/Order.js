@@ -25,6 +25,11 @@ const OrderSchema = new mongoose.Schema({
     },
     address: { type: String, required: true },
     status: { type: String, enum: ['Pending', 'Approved', 'Completed'], default: 'Pending' }
+},{
+    timestamps: {
+        createdAt: 'createdAt',
+        updatedAt: 'updatedAt',
+    }
 });
 
 OrderSchema.plugin(AutoIncrement, { inc_field: 'orderNumber', start_seq: 1001 });

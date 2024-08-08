@@ -18,9 +18,24 @@ export const reviewAPI = createApi({
             invalidatesTags: [{ type: 'Reviews', id: 'LIST' }],
             transformResponse: (result) => result,
         }),
+        getReviews: builder.query({
+            query(id) {
+              return {
+                url: `/reviews/getReview/${id}`,
+                credentials: 'include'
+              };
+            },
+            providesTags: (result, error, id) => {
+              return [{ type: 'Reviews', id }];
+            },
+            transformResponse(result) {
+              return result;
+            },
+          }),
     }),
 });
 
 export const {
     useLeaveReviewMutation,
+    useGetReviewsQuery
 } = reviewAPI;

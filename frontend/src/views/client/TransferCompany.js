@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import DataTable from 'react-data-table-component';
 import { useGetUsersQuery } from "../../redux/api/userAPI";
 import { Card, Col, Container, Row, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from "reactstrap";
-import { ChevronDown, Eye, MoreVertical } from "react-feather";
+import { Archive, ChevronDown, Eye, MoreVertical } from "react-feather";
 import { useNavigate } from "react-router-dom";
 import companyImg from "../../assets/images/company.png";
 
@@ -68,8 +68,12 @@ const TransferCompany = () => {
                             </DropdownToggle>
                             <DropdownMenu end container="body">
                                 <DropdownItem className="w-100" onClick={() => navigate(`/client/companies/order-request/${row._id}`)}>
-                                    <Eye size={14} className="mr-50" />
+                                    <Eye size={14} />
                                     <span className="align-middle mx-2">Order</span>
+                                </DropdownItem>
+                                <DropdownItem className="w-100" onClick={() => navigate(`/client/company-profile/${row._id}`)}>
+                                    <Archive size={14} />
+                                    <span className="align-middle mx-2">Company</span>
                                 </DropdownItem>
                             </DropdownMenu>
                         </UncontrolledDropdown>

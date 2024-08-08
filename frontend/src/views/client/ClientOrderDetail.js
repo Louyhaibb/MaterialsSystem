@@ -141,7 +141,13 @@ const ClientOrderDetail = () => {
                                         </Col>
                                         <Col md="6">
                                             <div className="mb-2 detail-item">
-                                                <strong>Company:</strong> {order.company?.name}
+                                                <span>
+                                                    <strong>Company:</strong> {order.company?.name}
+                                                </span>
+                                                <span className="mx-3">
+                                                    <a className="btn btn-orange btn-sm" href={`/client/company-profile/${order.company?._id}`}>View</a>
+                                                </span>
+                                                
                                             </div>
                                             <div className="mb-2 detail-item">
                                                 <strong>Email:</strong> {order.company?.email}

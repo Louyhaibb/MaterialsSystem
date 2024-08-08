@@ -117,7 +117,7 @@ export const userAPI = createApi({
             transformResponse(result) {
                 return result;
             },
-            async onQueryStarted(args, { dispatch, queryFulfilled }) {
+            async onQueryStarted(_args, { dispatch, queryFulfilled }) {
                 try {
                     const response = await queryFulfilled;
                     setUserData(JSON.stringify(response.data.updateAvatar));

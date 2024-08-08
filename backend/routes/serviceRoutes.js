@@ -260,6 +260,6 @@ router.put('/update/:id', validateToken(['company']), updateTransferService);
  */
 router.delete('/delete/:id', validateToken(['company']), deleteTransferService);
 
-router.get('/getOneService/:id', validateToken(['company']), getOneService);
+router.get('/getOneService/:id', validateToken(['company', 'client']), getOneService);
 
 module.exports = router;

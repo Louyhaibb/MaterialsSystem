@@ -43,6 +43,7 @@ app.use('/api/services', require('./routes/serviceRoutes'));
 app.use('/api/additional-services', require('./routes/additionalServiceRoutes'));
 app.use('/api/orders', require('./routes/orderRoutes'));
 app.use('/api/reviews', require('./routes/reviewRoutes'));
+app.use('/api/statistics', require('./routes/statisticsRoutes'));
 
 // Extended: https://swagger.io/specification/#infoObject
 const swaggerOptions = {

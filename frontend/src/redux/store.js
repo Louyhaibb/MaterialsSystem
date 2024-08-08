@@ -8,6 +8,7 @@ import { serviceAPI } from './api/serviceAPI';
 import { additionalServiceAPI } from './api/additionalServiceAPI';
 import { orderAPI } from './api/orderAPI';
 import { reviewAPI } from './api/reviewAPI';
+import { statsAPI } from './api/statsAPI';
 
 export const store = configureStore({
   reducer: {
@@ -18,6 +19,7 @@ export const store = configureStore({
     [additionalServiceAPI.reducerPath]: additionalServiceAPI.reducer,
     [orderAPI.reducerPath]: orderAPI.reducer,
     [reviewAPI.reducerPath]: reviewAPI.reducer,
+    [statsAPI.reducerPath]: statsAPI.reducer,
     userState: userReducer
   },
   devTools: process.env.NODE_ENV === 'development',
@@ -30,6 +32,7 @@ export const store = configureStore({
         additionalServiceAPI.middleware,
         orderAPI.middleware,
         reviewAPI.middleware,
+        statsAPI.middleware,
     ]),
 });
 

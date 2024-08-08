@@ -15,6 +15,11 @@ const ServiceSchema = new mongoose.Schema({
         required: false
     },
     address: { type: String, required: true },
+},{
+    timestamps: {
+        createdAt: 'createdAt',
+        updatedAt: 'updatedAt',
+    }
 });
 
 module.exports = mongoose.model('Service', ServiceSchema);
