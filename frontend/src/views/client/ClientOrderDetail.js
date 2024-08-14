@@ -48,6 +48,7 @@ const ClientOrderDetail = () => {
     };
 
     const renderActionButton = (status) => {
+        console.log(status)
         if (status === 'Completed') {
             return <Button color="outline-success" onClick={() => setModalVisibility(!modalVisibility)}>Leave Review</Button>;
         }
