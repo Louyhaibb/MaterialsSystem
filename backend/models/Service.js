@@ -5,7 +5,10 @@ const ServiceSchema = new mongoose.Schema({
     serviceType: { type: String, enum: ['Office', 'Apartment', 'Small Transfer', 'Warehouse', 'History'], default: 'Office' },
     description: { type: String, required: true },
     basePrice: { type: Number, required: true },
-    availability: { type: Date, required: true },
+    availability: {
+        startDate: { type: Date, required: true },
+        endDate: { type: Date, required: true },
+    },
     latitude: {
         type: Number,
         required: false

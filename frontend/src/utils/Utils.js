@@ -46,3 +46,21 @@ export const getDateFormat = (formattedDate) => {
     return formattedDateTime;
 };
 
+export const formatDateRange = (availability) => {
+    if (!availability || !availability.startDate || !availability.endDate) return '';
+
+    const formatDate = (date) => {
+        const d = new Date(date);
+        const year = d.getFullYear();
+        const month = String(d.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed
+        const day = String(d.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    };
+
+    const start = formatDate(availability.startDate);
+    const end = formatDate(availability.endDate);
+
+    return `${start} - ${end}`;
+};
+
+

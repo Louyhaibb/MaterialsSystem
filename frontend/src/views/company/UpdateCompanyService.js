@@ -8,6 +8,8 @@ import { useForm } from 'react-hook-form';
 import Autocomplete from 'react-google-autocomplete';
 import { useGetServiceQuery, useUpdateServiceMutation } from "../../redux/api/serviceAPI";
 import { isObjEmpty } from "../../utils/Utils";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 const UpdateCompanyService = () => {
     const navigate = useNavigate();
@@ -23,46 +25,44 @@ const UpdateCompanyService = () => {
         formState: { errors }
     } = useForm();
     const [addressObj, setAddressObj] = useState();
+    const [dateRange, setDateRange] = useState([null, null]);
+    const [startDate, endDate] = dateRange;
 
     useEffect(() => {
         refetchService();
-    },[refetchService]);
+    }, [refetchService]);
 
     useEffect(() => {
         if (service) {
             const fields = ['description', 'basePrice', 'serviceType'];
             fields.forEach((field) => setValue(field, service[field]));
-            setValue('availability', formatDate(service.availability));
+            setDateRange([new Date(service.availability.startDate), new Date(service.availability.endDate)]);
             setAddressObj(service.address);
         }
     }, [service]);
 
-    const formatDate = (date) => {
-        const d = new Date(date);
-        return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}T${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
-    }
-
     const onSubmit = (data) => {
-        const selectedDateTime = new Date(data.availability);
-        const hours = selectedDateTime.getHours();
-
-        if (hours < 7 || hours >= 23) {
-            setError('availability', {
-                type: 'manual',
-                message: 'Time must be between 7:00 AM and 11:00 PM.',
-            });
-            return;
-        }
-
         if (!addressObj) {
-            errors.address = {};
             setError('address', {
                 type: 'manual',
                 message: 'Please select an address using the suggested option'
             });
         }
+
+        if (!startDate || !endDate) {
+            setError('dateRange', {
+                type: 'manual',
+                message: 'Please select a valid date range.',
+            });
+            return;
+        }
+
         if (isObjEmpty(errors)) {
             data.address = addressObj;
+            data.availability = {
+                startDate: startDate.toISOString(),
+                endDate: endDate.toISOString(),
+            };
             updateCompanyService({ id: id, service: data });
         }
     }
@@ -127,13 +127,22 @@ const UpdateCompanyService = () => {
                                         <Col md="6">
                                             <div className='mb-2'>
                                                 <Label>Availability</Label>
-                                                <input
-                                                    className={`form-control ${classnames({ 'is-invalid': errors.availability })}`}
-                                                    type="datetime-local"
-                                                    id="availability"
-                                                    {...register('availability', { required: true })}
-                                                />
-                                                {errors.availability && <small className="text-danger">{errors.availability.message}</small>}
+                                                <div className="mt-0">
+                                                    <DatePicker
+                                                        selected={startDate}
+                                                        onChange={(update) => {
+                                                            setDateRange(update);
+                                                            clearErrors('dateRange');
+                                                        }}
+                                                        startDate={startDate}
+                                                        endDate={endDate}
+                                                        selectsRange
+                                                        className={`form-control ${classnames({ 'is-invalid': errors.dateRange })}`}
+                                                        placeholderText="Select a date range"
+                                                    />
+                                                    {errors.dateRange && <small className="text-danger">{errors.dateRange.message}</small>}
+                                                </div>
+
                                             </div>
                                         </Col>
                                         <Col md="6">
@@ -153,7 +162,7 @@ const UpdateCompanyService = () => {
                                                     }}
                                                     defaultValue={addressObj || ''} // Set the initial value for address
                                                 />
-                                                {Object.keys(errors).length && errors.address ? <small className="text-danger mt-1">{errors.address.message}</small> : null}
+                                                {errors.address && <small className="text-danger mt-1">{errors.address.message}</small>}
                                             </div>
                                         </Col>
                                     </Row>
@@ -183,7 +192,8 @@ const UpdateCompanyService = () => {
                 </Row>
             </Container>
         </div>
-    )
+    );
 }
 
 export default UpdateCompanyService;
+

@@ -5,13 +5,13 @@
   "main": "server.js",
   "scripts": {
     "dev": "nodemon server.js",
-    "start": "node index.js"
+    "start": "node server.js"
   },
   "keywords": [
     "material",
     "shipping"
   ],
-  "author": "Dor",
+  "author": "Luay",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.1.1",

@@ -36,10 +36,17 @@ const validateToken = require('../utils/validateToken');
  *                     type: number
  *                     example: 100.0
  *                   availability:
- *                     type: string
- *                     format: date-time
- *                     example: "2023-10-25T13:45:00Z"
- *                   location:
+ *                     type: object
+ *                     properties:
+ *                       startDate:
+ *                         type: string
+ *                         format: date-time
+ *                         example: "2023-10-25T13:45:00Z"
+ *                       endDate:
+ *                         type: string
+ *                         format: date-time
+ *                         example: "2023-10-26T13:45:00Z"
+ *                   address:
  *                     type: string
  *                     example: "Downtown"
  *       500:
@@ -57,6 +64,7 @@ const validateToken = require('../utils/validateToken');
  *                   example: "Error message"
  */
 router.get('/', validateToken(['company', 'client']), getServices);
+
 /**
  * @openapi
  * /api/services/create:
@@ -75,7 +83,7 @@ router.get('/', validateToken(['company', 'client']), getServices);
  *               - description
  *               - basePrice
  *               - availability
- *               - location
+ *               - address
  *             properties:
  *               serviceType:
  *                 type: string
@@ -88,10 +96,18 @@ router.get('/', validateToken(['company', 'client']), getServices);
  *                 type: number
  *                 example: 100.0
  *               availability:
- *                 type: string
- *                 format: date-time
- *                 example: "2023-10-25T13:45:00Z"
- *               location:
+ *                 type: object
+ *                 required: true
+ *                 properties:
+ *                   startDate:
+ *                     type: string
+ *                     format: date-time
+ *                     example: "2023-10-25T13:45:00Z"
+ *                   endDate:
+ *                     type: string
+ *                     format: date-time
+ *                     example: "2023-10-26T13:45:00Z"
+ *               address:
  *                 type: string
  *                 example: "Downtown"
  *     responses:
@@ -123,10 +139,11 @@ router.get('/', validateToken(['company', 'client']), getServices);
  *                   example: "Error message"
  */
 router.post('/create', validateToken(['company']), createTransferService);
+
 /**
  * @openapi
  * /api/services/update/{id}:
- *   post:
+ *   put:
  *     summary: Update an existing service
  *     tags:
  *       - Services
@@ -156,10 +173,17 @@ router.post('/create', validateToken(['company']), createTransferService);
  *                 type: number
  *                 example: 150.0
  *               availability:
- *                 type: string
- *                 format: date-time
- *                 example: "2023-11-01T10:00:00Z"
- *               location:
+ *                 type: object
+ *                 properties:
+ *                   startDate:
+ *                     type: string
+ *                     format: date-time
+ *                     example: "2023-11-01T10:00:00Z"
+ *                   endDate:
+ *                     type: string
+ *                     format: date-time
+ *                     example: "2023-11-02T10:00:00Z"
+ *               address:
  *                 type: string
  *                 example: "Uptown"
  *     responses:

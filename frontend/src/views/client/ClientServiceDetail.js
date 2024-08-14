@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import { useEffect } from "react";
 import { useGetServiceQuery } from "../../redux/api/serviceAPI";
 import FullScreenLoader from "../../components/FullScreenLoader";
-import { getDateFormat } from "../../utils/Utils";
+import { formatDateRange } from "../../utils/Utils";
 
 const ClientServiceDetail = () => {
     const { id } = useParams();
@@ -41,7 +41,7 @@ const ClientServiceDetail = () => {
                                         <Row>
                                             <Col md="6" className="mb-3">
                                                 <Label><strong>Availability:</strong></Label>
-                                                <p>{getDateFormat(service.availability)}</p>
+                                                <p>{formatDateRange(service.availability)}</p>
                                             </Col>
                                             <Col md="6" className="mb-3">
                                                 <Label><strong>Location:</strong></Label>

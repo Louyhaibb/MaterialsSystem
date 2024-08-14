@@ -38,6 +38,14 @@ exports.getServices = async (req, res) => {
             filter.serviceType = { $in: serviceTypes };
         }
 
+        // Handling availability range filter
+        if (req.query.availabilityStart && req.query.availabilityEnd) {
+            const startDate = new Date(req.query.availabilityStart);
+            const endDate = new Date(req.query.availabilityEnd);
+            filter['availability.startDate'] = { $lte: endDate };
+            filter['availability.endDate'] = { $gte: startDate };
+        }
+
         // Fetch services and populate company details
         let services = await Service.find(filter).populate({
             path: 'company',
@@ -60,7 +68,6 @@ exports.getServices = async (req, res) => {
     }
 };
 
-
 exports.getOneService = async (req, res) => {
     const service = await Service.findOne({ _id: req.params.id });
     return res.send(service);
@@ -75,7 +82,10 @@ exports.createTransferService = async (req, res) => {
             serviceType,
             description,
             basePrice,
-            availability,
+            availability: {
+                startDate: new Date(availability.startDate),
+                endDate: new Date(availability.endDate)
+            },
             address: req.body.address.formatted_address,
             latitude: lat,
             longitude: lng,
@@ -113,7 +123,10 @@ exports.updateTransferService = async (req, res) => {
         serviceType,
         description,
         basePrice,
-        availability,
+        availability: {
+            startDate: new Date(availability.startDate),
+            endDate: new Date(availability.endDate)
+        },
         address: formatted_address,
         latitude,
         longitude,

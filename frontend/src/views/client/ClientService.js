@@ -5,7 +5,7 @@ import DataTable from 'react-data-table-component';
 import { Col, Container, Row, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem, Card, Badge, Button, CardBody } from "reactstrap";
 import { useGetServicesQuery } from "../../redux/api/serviceAPI";
 import { ChevronDown, Eye, MoreVertical } from "react-feather";
-import { getDateFormat } from "../../utils/Utils";
+import { formatDateRange } from "../../utils/Utils";
 import Nouislider from 'nouislider-react';
 import wNumb from 'wnumb';
 
@@ -85,7 +85,7 @@ const ClientServices = () => {
         },
         {
             name: 'Availability',
-            selector: (row = {}) => getDateFormat(row.availability) || '',
+            selector: (row = {}) => formatDateRange(row.availability) || '',
             sortable: true
         },
         {

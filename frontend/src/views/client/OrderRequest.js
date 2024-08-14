@@ -29,19 +29,37 @@ const OrderRequest = () => {
         formState: { errors }
     } = useForm();
 
-    const onSubmit = (data) => { 
+    const onSubmit = (data) => {
         if (!addressObj) {
             errors.address = {};
             setError('address', {
                 type: 'manual',
                 message: 'Please select an address using the suggested option'
             });
+            return;
         }
+
+        const selectedTransferDate = new Date(data.orderDate);
+        const selectedServices = company?.services.filter(service => data.services.includes(service._id)) || [];
+
+        // Check if the selected transfer date is within the availability range of each selected service
+        for (const service of selectedServices) {
+            const startDate = new Date(service.availability.startDate);
+            const endDate = new Date(service.availability.endDate);
+
+            if (selectedTransferDate < startDate || selectedTransferDate > endDate) {
+                toast.error(`Transfer date must be between ${startDate.toISOString().split('T')[0]} and ${endDate.toISOString().split('T')[0]} for the selected service: ${service.serviceType}`, {
+                    position: 'top-right',
+                });
+                return;
+            }
+        }
+
         if (isObjEmpty(errors)) {
             data.address = addressObj;
             data.company = id;
+
             // Calculate totalPrice
-            const selectedServices = company?.services.filter(service => data.services.includes(service._id)) || [];
             const selectedAdditionalServices = company?.services.flatMap(service =>
                 service.additionalServices.filter(addService => data.additionalServices.includes(addService._id))
             ) || [];
@@ -53,7 +71,6 @@ const OrderRequest = () => {
             
             createOrderRequest(data);
         }
-        
     };
 
     useEffect(() => {

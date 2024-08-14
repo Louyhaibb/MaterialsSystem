@@ -6,7 +6,7 @@ import DataTable from 'react-data-table-component';
 import { Col, Container, Row, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem, Card, Modal, ModalHeader, ModalBody, ModalFooter, Button, Badge } from "reactstrap";
 import { useDeleteServiceMutation, useGetServicesQuery } from "../../redux/api/serviceAPI";
 import { ChevronDown, Edit, MoreVertical, Trash2 } from "react-feather";
-import { getDateFormat } from "../../utils/Utils";
+import { formatDateRange } from "../../utils/Utils"; // You should create this utility function
 
 const CompanyServices = () => {
     const navigate = useNavigate();
@@ -15,16 +15,17 @@ const CompanyServices = () => {
     const [modalVisibility, setModalVisibility] = useState(false);
     const [selectedServiceId, setSelectedServiceId] = useState(null);
     const [deleteService, { isLoading, isError, error, isSuccess, data }] = useDeleteServiceMutation();
+
     useEffect(() => {
-        refetch()
+        refetch();
     }, []);
 
     const openDeleteModal = (serviceId) => {
         setSelectedServiceId(serviceId);
         setModalVisibility(true);
-    }
+    };
 
-    const handleDeleteUser = (id) => {
+    const handleDeleteService = (id) => {
         deleteService(id);
         setModalVisibility(false);
     };
@@ -32,7 +33,7 @@ const CompanyServices = () => {
     const truncateText = (text, maxLength) => {
         if (text.length <= maxLength) return text;
         return `${text.substring(0, maxLength)}...`;
-    }
+    };
 
     useEffect(() => {
         if (isSuccess) {
@@ -75,7 +76,7 @@ const CompanyServices = () => {
         },
         {
             name: 'Availability',
-            selector: (row = {}) => getDateFormat(row.availability) || '',
+            selector: (row = {}) => formatDateRange(row.availability) || '',
             sortable: true
         },
         {
@@ -116,12 +117,12 @@ const CompanyServices = () => {
             <Container>
                 <Row className="my-3">
                     <Col>
-                        <h4 className="main-title">Company Service</h4>
+                        <h4 className="main-title">Company Services</h4>
                     </Col>
                 </Row>
                 <Row className="my-3">
                     <Col>
-                        <a href="/company/services/create-service" className="btn btn-orange btn-sm">Create Sevice</a>
+                        <a href="/company/services/create-service" className="btn btn-orange btn-sm">Create Service</a>
                     </Col>
                 </Row>
                 <Card>
@@ -140,9 +141,9 @@ const CompanyServices = () => {
             </Container>
             <Modal isOpen={modalVisibility} toggle={() => setModalVisibility(!modalVisibility)}>
                 <ModalHeader toggle={() => setModalVisibility(!modalVisibility)}>Confirm Delete?</ModalHeader>
-                <ModalBody>Are you sure you want to delete?</ModalBody>
+                <ModalBody>Are you sure you want to delete this service?</ModalBody>
                 <ModalFooter className="justify-content-start">
-                    <Button color="danger" onClick={() => handleDeleteUser(selectedServiceId)}>
+                    <Button color="danger" onClick={() => handleDeleteService(selectedServiceId)}>
                         Yes
                     </Button>
                     <Button color="secondary" onClick={() => setModalVisibility(!modalVisibility)} outline>
@@ -151,7 +152,7 @@ const CompanyServices = () => {
                 </ModalFooter>
             </Modal>
         </div>
-    )
-}
+    );
+};
 
 export default CompanyServices;

@@ -6,6 +6,8 @@ import { useEffect, useState } from "react";
 import { toast } from 'react-toastify';
 import { useForm } from 'react-hook-form';
 import Autocomplete from 'react-google-autocomplete';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import { useCreateServiceMutation } from "../../redux/api/serviceAPI";
 import { isObjEmpty } from "../../utils/Utils";
 
@@ -19,29 +21,34 @@ const CreateCompanyService = () => {
         setError,
         formState: { errors }
     } = useForm();
-    const [addressObj, setAddressObj] = useState();
+    const [addressObj, setAddressObj] = useState(null);
+    const [dateRange, setDateRange] = useState([null, null]);
+    const [startDate, endDate] = dateRange;
 
     const onSubmit = (data) => {
-        const selectedDateTime = new Date(data.availability);
-        const hours = selectedDateTime.getHours();
-
-        if (hours < 7 || hours >= 23) {
+        if (!startDate || !endDate) {
             setError('availability', {
                 type: 'manual',
-                message: 'Time must be between 7:00 AM and 11:00 PM.',
+                message: 'Please select a valid date range.',
             });
             return;
         }
 
         if (!addressObj) {
-            errors.address = {};
             setError('address', {
                 type: 'manual',
                 message: 'Please select an address using the suggested option'
             });
+            return;
         }
+
         if (isObjEmpty(errors)) {
             data.address = addressObj;
+            data.availability = {
+                startDate: startDate.toISOString(),
+                endDate: endDate.toISOString(),
+            };
+            console.log(data)
             createCompanyService(data);
         }
     }
@@ -80,7 +87,7 @@ const CreateCompanyService = () => {
                                                     className={`form-control ${classnames({ 'is-invalid': errors.serviceType })}`}
                                                     {...register('serviceType', { required: true })}
                                                 >
-                                                    <option value="">Select an Service</option>
+                                                    <option value="">Select a Service</option>
                                                     <option value="Office">Office</option>
                                                     <option value="Apartment">Apartment</option>
                                                     <option value="Small Transfer">Small Transfer</option>
@@ -106,13 +113,22 @@ const CreateCompanyService = () => {
                                         <Col md="6">
                                             <div className='mb-2'>
                                                 <Label>Availability</Label>
-                                                <input
-                                                    className={`form-control ${classnames({ 'is-invalid': errors.availability })}`}
-                                                    type="datetime-local"
-                                                    id="availability"
-                                                    {...register('availability', { required: true })}
-                                                />
-                                                {errors.availability && <small className="text-danger">{errors.availability.message}</small>}
+                                                <div className="mt-0">
+                                                    <DatePicker
+                                                        selected={startDate}
+                                                        onChange={(update) => {
+                                                            setDateRange(update);
+                                                            clearErrors('availability');
+                                                        }}
+                                                        startDate={startDate}
+                                                        endDate={endDate}
+                                                        selectsRange
+                                                        className={`form-control ${classnames({ 'is-invalid': errors.availability })}`}
+                                                        placeholderText="Select a date range"
+                                                    />
+                                                    {errors.availability && <small className="text-danger">{errors.availability.message}</small>}
+                                                </div>
+
                                             </div>
                                         </Col>
                                         <Col md="6">
@@ -121,7 +137,7 @@ const CreateCompanyService = () => {
                                                 <Autocomplete
                                                     className="form-control"
                                                     apiKey={process.env.REACT_APP_GOOGLE_API_KEY}
-                                                    onChange={(e) => setAddressObj()}
+                                                    onChange={(e) => setAddressObj(null)}
                                                     onPlaceSelected={(place) => {
                                                         clearErrors('address');
                                                         setAddressObj(place);
@@ -131,7 +147,7 @@ const CreateCompanyService = () => {
                                                         componentRestrictions: { country: 'il' }
                                                     }}
                                                 />
-                                                {Object.keys(errors).length && errors.address ? <small className="text-danger mt-1">{errors.address.message}</small> : null}
+                                                {errors.address && <small className="text-danger mt-1">{errors.address.message}</small>}
                                             </div>
                                         </Col>
                                     </Row>
@@ -161,7 +177,7 @@ const CreateCompanyService = () => {
                 </Row>
             </Container>
         </div>
-    )
+    );
 }
 
 export default CreateCompanyService;
